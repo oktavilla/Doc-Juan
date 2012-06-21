@@ -1,4 +1,4 @@
-PDFizer
+Doc-Juan
 =======
 
 API for converting HTML documents into specified format. 
@@ -19,7 +19,7 @@ API for converting HTML documents into specified format.
 
 `options` - Options for renderer, see below.
 
-`key` - A base64 encoded string of a HMAC digest of ENV['PDFIZER_KEY'] and the parameters sorted by name.
+`key` - A base64 encoded string of a HMAC digest of ENV['DOC_JUAN_KEY'] and the parameters sorted by name.
 
 #### Options
 
