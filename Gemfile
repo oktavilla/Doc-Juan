@@ -1,6 +1,7 @@
 source :rubygems
 
 gem 'sinatra', '~> 1.3.2'
+gem 'addressable', '~> 2.2.8'
 
 group :test do
   gem 'rake'
