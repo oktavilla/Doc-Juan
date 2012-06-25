@@ -3,6 +3,10 @@ source :rubygems
 gem 'sinatra', '~> 1.3.2'
 gem 'addressable', '~> 2.2.8'
 
+group :production do
+  gem 'unicorn', '4.3.1'
+end
+
 group :test do
   gem 'rake'
   gem 'minitest', '~> 3.1.0'
