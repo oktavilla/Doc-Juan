@@ -19,7 +19,13 @@ API for converting HTML documents into specified format.
 
 `options` - Options for renderer, see below.
 
-`key` - A base64 encoded string of a HMAC digest of ENV['DOC_JUAN_KEY'] and the parameters sorted by name.
+`key` - A base64 encoded string of a HMAC digest of ENV['DOC_JUAN_SECRET'] and the parameters sorted by name.
+
+#### Generating a valid key
+
+    require 'openssl'
+    sha1 = OpenSSL::Digest::Digest.new('sha1')
+    key = OpenSSL::HMAC.hexdigest(sha1, SECRET, 'filename:test-url:http://example.com')
 
 #### Options
 
