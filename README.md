@@ -25,7 +25,7 @@ API for converting HTML documents into specified format.
 
     require 'openssl'
     sha1 = OpenSSL::Digest::Digest.new('sha1')
-    key = OpenSSL::HMAC.hexdigest(sha1, SECRET, 'filename:test-url:http://example.com')
+    key = OpenSSL::HMAC.hexdigest(sha1, SECRET, 'filename:test-options_title:Test-url:http://example.com')
 
 #### Options
 

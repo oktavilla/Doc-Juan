@@ -9,14 +9,21 @@ describe 'Auth' do
   end
 
   it 'has a secret based on env variable DOC_JUAN_SECRET' do
-    Auth.new('').secret.must_equal 'zecret'
+    Auth.new.secret.must_equal 'zecret'
   end
 
   it 'is initialized with a hash of params' do
     params = { a: 1 }
-    a = Auth.new params
+    auth = Auth.new params
 
-    a.params.must_equal params
+    auth.params.must_equal params
+  end
+
+  it 'prepares params by flattening and sorting' do
+    params = { 'b' => { 'c' => 2 }, 'a' => 1,  }
+    auth = Auth.new params
+
+    auth.prepared_params.must_equal({ 'a' => 1, 'b_c' => 2 })
   end
 
   it 'creates a message based on params sorted by key name' do
