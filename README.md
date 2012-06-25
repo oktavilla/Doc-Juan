@@ -59,6 +59,8 @@ http://code.google.com/p/wkhtmltopdf/
 
 http://madalgo.au.dk/~jakobt/wkhtmltoxdoc/wkhtmltopdf-0.9.9-doc.html
 
+http://wiki.nginx.org/XSendfile
+
 ## Future
 
 * PNG / JPEG output support
