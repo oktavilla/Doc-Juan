@@ -26,7 +26,7 @@ describe 'Auth' do
     auth.prepared_params.must_equal({ 'a' => 1, 'b_c' => 2 })
   end
 
-  it 'creates a message based on params sorted by key name' do
+  it 'creates a message based' do
     params = { 'kittehz' => 'please', 'hello' => 'there' }
     auth = Auth.new params
 
