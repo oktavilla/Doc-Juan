@@ -12,6 +12,7 @@ group :test do
   gem 'minitest', '~> 3.1.0'
   gem 'minitest-reporters', '~> 0.7.1'
   gem 'rack-test', '~> 0.6.1'
+  gem 'mocha', '~> 0.11.4', require: false
 
   # Guard
   gem 'guard', '~> 1.2.1'

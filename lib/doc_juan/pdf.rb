@@ -4,7 +4,8 @@ require_relative './command_line_options'
 module DocJuan
   class Pdf
     class InvalidUrlError < StandardError; end
-    attr_accessor :url, :filename, :options
+
+    attr_reader :url, :filename, :options
 
     def self.available_options
       [
@@ -64,6 +65,17 @@ module DocJuan
 
     def filename= filename
       @filename = sanitize_filename filename
+    end
+
+    def generate path
+      path = File.join path, filename
+
+      args = [self.class.executable]
+      args << url
+      args << path
+      args << options.to_s
+
+      system args.join(' ')
     end
 
     private

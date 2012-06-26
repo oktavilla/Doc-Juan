@@ -1,4 +1,5 @@
 require_relative '../spec_helper'
+require 'mocha'
 
 require_relative '../../lib/doc_juan/pdf.rb'
 
@@ -53,6 +54,12 @@ describe DocJuan::Pdf do
   end
 
   describe '#generate' do
-    it 'passes the url, filename and options to wkhtmltopdf'
+    it 'passes the url, filename and options to wkhtmltopdf' do
+      DocJuan::Pdf.stubs(:default_options).returns Hash.new
+      pdf = DocJuan::Pdf.new url, filename, options
+      pdf.expects(:system).with("wkhtmltopdf #{url} /documents/#{filename} --page-size A5")
+
+      pdf.generate '/documents'
+    end
   end
 end
