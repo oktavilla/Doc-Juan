@@ -1,13 +1,13 @@
-require 'spec_helper'
+require_relative './spec_helper'
 require 'rack/test'
 
-require_relative '../lib/doc_juan.rb'
+require_relative '../lib/doc_juan/app.rb'
 
 describe 'DocJuan' do
   include Rack::Test::Methods
 
   def app
-    DocJuan
+    DocJuan::App
   end
 
   describe '/' do
