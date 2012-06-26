@@ -1,7 +1,7 @@
-require_relative '../spec_helper'
+require_relative 'spec_helper'
 require 'mocha'
 
-require_relative '../../lib/doc_juan/pdf.rb'
+require_relative '../lib/doc_juan/pdf.rb'
 
 describe DocJuan::Pdf do
   let(:url) { 'http://example.com' }

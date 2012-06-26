@@ -1,5 +1,6 @@
 require 'addressable/uri'
 require_relative './command_line_options'
+require_relative './generated_pdf'
 
 module DocJuan
   class Pdf
