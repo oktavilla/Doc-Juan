@@ -54,12 +54,24 @@ describe DocJuan::Pdf do
   end
 
   describe '#generate' do
-    it 'passes the url, filename and options to wkhtmltopdf' do
+    before :each do
       DocJuan::Pdf.stubs(:default_options).returns Hash.new
-      pdf = DocJuan::Pdf.new url, filename, options
-      pdf.expects(:system).with("wkhtmltopdf #{url} /documents/#{filename} --page-size A5")
+    end
 
-      pdf.generate '/documents'
+    subject { DocJuan::Pdf.new(url, filename, options) }
+
+    it 'passes the url, filename and options to wkhtmltopdf' do
+      subject.expects(:system).with("wkhtmltopdf #{url} /documents/#{filename} --page-size A5")
+
+      subject.generate '/documents'
+    end
+
+    it 'returns a generated pdf with the path to the file' do
+      subject.stubs(:system).returns true
+      result = subject.generate '/documents'
+
+      result.path.must_equal '/documents/document.pdf'
+      result.ok?.must_equal true
     end
   end
 end

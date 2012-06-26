@@ -75,7 +75,9 @@ module DocJuan
       args << path
       args << options.to_s
 
-      system args.join(' ')
+      result = system args.join(' ')
+
+      GeneratedPdf.new path, result
     end
 
     private
