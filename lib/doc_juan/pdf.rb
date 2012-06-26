@@ -51,7 +51,10 @@ module DocJuan
     def initialize url, filename, options = {}
       self.url = url
       self.filename = filename
-      self.options = options
+
+      options = sanitize_options options
+      options = self.class.default_options.merge options
+      @options = DocJuan::CommandLineOptions.new options
     end
 
     def url= url
@@ -61,12 +64,6 @@ module DocJuan
 
     def filename= filename
       @filename = sanitize_filename filename
-    end
-
-    def options= options
-      sanitized_options = sanitize_options options
-      sanitized_options = self.class.default_options.merge sanitized_options
-      @options = DocJuan::CommandLineOptions.new sanitized_options
     end
 
     private
