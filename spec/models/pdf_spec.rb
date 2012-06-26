@@ -6,7 +6,7 @@ describe DocJuan::Pdf do
   let(:url) { 'http://example.com' }
   let(:filename) { 'document.pdf' }
   let(:options) do
-    { 'size' => 'A5' }
+    { page_size: 'A5' }
   end
 
   it 'ensures the url is valid' do
@@ -25,18 +25,18 @@ describe DocJuan::Pdf do
 
   it 'sanitizes options' do
     DocJuan::Pdf.stub(:default_options, {}) do
-      DocJuan::Pdf.stub(:available_options, [ :size ]) do
-        pdf = DocJuan::Pdf.new(url, filename, { size: 'A4', color: 'white' })
-        pdf.options.must_be :==, { size: 'A4'}
+      DocJuan::Pdf.stub(:available_options, [ :page_size ]) do
+        pdf = DocJuan::Pdf.new(url, filename, { page_size: 'A4', color: 'white' })
+        pdf.options.must_be :==, { page_size: 'A4'}
       end
     end
   end
 
   it 'appends default options' do
-    DocJuan::Pdf.stub(:available_options, [ :size, :color ]) do
-      DocJuan::Pdf.stub(:default_options, { size: 'A4', color: 'black' }) do
+    DocJuan::Pdf.stub(:available_options, [ :page_size, :color ]) do
+      DocJuan::Pdf.stub(:default_options, { page_size: 'A4', color: 'black' }) do
         pdf = DocJuan::Pdf.new(url, filename, { color: 'white' })
-        pdf.options.must_be :==, { size: 'A4', color: 'white' }
+        pdf.options.must_be :==, { page_size: 'A4', color: 'white' }
       end
     end
   end
