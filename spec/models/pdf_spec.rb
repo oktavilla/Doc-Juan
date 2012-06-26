@@ -24,9 +24,11 @@ describe DocJuan::Pdf do
   end
 
   it 'sanitizes options' do
-    DocJuan::Pdf.stub(:available_options, [ :size ]) do
-      pdf = DocJuan::Pdf.new(url, filename, { size: 'A4', color: 'white' })
-      pdf.options.must_be :==, { size: 'A4'}
+    DocJuan::Pdf.stub(:default_options, {}) do
+      DocJuan::Pdf.stub(:available_options, [ :size ]) do
+        pdf = DocJuan::Pdf.new(url, filename, { size: 'A4', color: 'white' })
+        pdf.options.must_be :==, { size: 'A4'}
+      end
     end
   end
 
