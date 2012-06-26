@@ -9,14 +9,6 @@ describe DocJuan::Pdf do
     { 'size' => 'A5' }
   end
 
-  it 'is initalized with an url, a filename and options' do
-    pdf = DocJuan::Pdf.new url, filename, options
-
-    pdf.url.must_equal url
-    pdf.filename.must_equal filename
-    pdf.options.must_equal DocJuan::CommandLineOptions.new(options)
-  end
-
   it 'ensures the url is valid' do
     proc {
       DocJuan::Pdf.new 'bad-url', filename, options
