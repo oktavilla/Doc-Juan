@@ -40,6 +40,14 @@ module DocJuan
       }
     end
 
+    def self.executable
+      @executable ||= 'wkhtmltopdf'
+    end
+
+    def self.executable= path
+      @executable = path
+    end
+
     def initialize url, filename, options = {}
       self.url = url
       self.filename = filename

@@ -41,6 +41,17 @@ describe DocJuan::Pdf do
     end
   end
 
+  it 'has a default executable' do
+    DocJuan::Pdf.executable.must_equal 'wkhtmltopdf'
+  end
+
+  it 'sets a new executable path' do
+    DocJuan::Pdf.executable = '/usr/local/bin/wkhtmltopdf'
+    DocJuan::Pdf.executable.must_equal'/usr/local/bin/wkhtmltopdf'
+
+    DocJuan::Pdf.executable = nil
+  end
+
   describe '#generate' do
     it 'passes the url, filename and options to wkhtmltopdf'
   end
