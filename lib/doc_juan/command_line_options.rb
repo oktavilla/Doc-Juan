@@ -20,7 +20,7 @@ module DocJuan
       normalized_options = {}
       options.each do |k, v|
         key = "--#{k}".to_s.gsub(/[^a-z0-9\-]/, '-')
-        normalized_options[key] = v.is_a?(TrueClass) ? nil : v.to_s
+        normalized_options[key] = v.is_a?(TrueClass) ? nil : %Q{"#{v.to_s}"}
       end
 
       normalized_options
@@ -28,6 +28,10 @@ module DocJuan
 
     def to_s
       normalize_options(options).to_a.flatten.compact.join(' ')
+    end
+
+    def [](key)
+      options[key]
     end
   end
 end

@@ -14,6 +14,13 @@ module DocJuan
 
     # render a html page to a document
     get '/render' do
+      pdf = DocJuan::Pdf.new params[:url], params[:filename], params[:options]
+      result = pdf.generate
+      if result.ok?
+        headers['Content-Type'] = result.mime_type
+        headers['Content-Disposition'] = "attachment; filename=\"#{result.filename}\""
+        headers['X-Accel-Redirect'] = result.path
+      end
     end
   end
 end

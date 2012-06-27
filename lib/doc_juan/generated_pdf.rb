@@ -1,9 +1,9 @@
 module DocJuan
   class GeneratedPdf
-    attr_reader :path
+    attr_accessor :filename
 
-    def initialize path, result
-      @path = path
+    def initialize name, result
+      @name = name
       @result = result
     end
 
@@ -13,6 +13,10 @@ module DocJuan
 
     def path
       File.join DocJuan.config[:document_uri], @name
+    end
+
+    def mime_type
+      'application/pdf'
     end
   end
 end

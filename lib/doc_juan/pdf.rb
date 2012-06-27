@@ -6,25 +6,36 @@ require_relative 'generated_pdf'
 module DocJuan
   class Pdf
     class InvalidUrlError < StandardError; end
+    class BadOptionValueError < StandardError; end
 
     attr_reader :url, :filename, :options
 
     def self.available_options
       [
         :title,
+        :lowquality,
         :orientation,
-        :page_height, :page_width, :page_size,
-        :print_media_type, :redirect_delay,
+        :height, :width, :size,
+        :print_stylesheet
       ]
     end
 
     def self.default_options
       {
-        page_size:     'A4',
+        size:          'A4',
         margin_top:    '0mm',
         margin_right:  '0mm',
         margin_bottom: '0mm',
         margin_left:   '0mm'
+      }
+    end
+
+    def self.options_to_arguments
+      {
+        size: :page_size,
+        width: :page_width,
+        height: :page_height,
+        print_stylesheet: :print_media_type
       }
     end
 
@@ -37,46 +48,51 @@ module DocJuan
     end
 
     def initialize url, filename, options = {}
-      self.url = url
-      self.filename = filename
-
-      options = sanitize_options options
-      options = self.class.default_options.merge options
-      @options = DocJuan::CommandLineOptions.new options
-    end
-
-    def url= url
-      validate_url url
       @url = url
-    end
-
-    def filename= filename
       @filename = sanitize_filename filename
+
+      @options = DocJuan::CommandLineOptions.new prepare_options(options)
     end
 
-    def generate path
-      path = File.join path, filename
+    def identifier
+      @identifier ||= Digest::MD5.hexdigest [url, options.to_s].join(' ')
+    end
 
+    def path
+      File.join DocJuan.config[:document_path], identifier
+    end
+
+    def exists?
+      File.exists? path
+    end
+
+    def generated
+      pdf = GeneratedPdf.new identifier, exists?
+      pdf.filename = self.filename
+      pdf
+    end
+
+    def generate
+      path = File.join directory, identifier
       args = [self.class.executable]
-      args << url
-      args << path
+      args << %Q{"#{url}"}
+      args << %Q{"#{path}"}
       args << options.to_s
 
-      result = system args.join(' ')
+      run_command args.join(' ')
 
-      GeneratedPdf.new path, result
+      generated
+    end
+
+    def run_command command
+      system command
+    end
+
+    def directory
+      DocJuan.config[:document_path]
     end
 
     private
-
-    def validate_url url
-      begin
-        parsed_url = Addressable::URI.parse url
-        raise InvalidUrlError unless %w{http https}.include? parsed_url.scheme
-      rescue Addressable::URI::InvalidURIError
-        raise InvalidUrlError
-      end
-    end
 
     def sanitize_filename filename
       ext = File.extname filename.to_s
@@ -86,8 +102,40 @@ module DocJuan
       "#{sanitized_filename}.pdf"
     end
 
-    def sanitize_options options
-      options.delete_if { |k, v| !self.class.available_options.include?(k) }
+    def prepare_options options
+      options = sanitize_options(options || {})
+      options = self.class.default_options.merge options
+      options = map_to_arguments(options)
+
+      options
     end
+
+    def sanitize_options options
+      bad_chars_regex = /[^0-9a-zA-Z\-\_\.\s]/
+
+      options.delete_if { |k, v| !self.class.available_options.include?(k) }
+      options[:print_stylesheet] = true if options.key? :print_stylesheet
+      options[:title].gsub!(bad_chars_regex, '') if options.key? :title
+
+      if options.values.detect { |value| value.to_s =~ bad_chars_regex }
+        raise BadOptionValueError
+      end
+
+      options
+    end
+
+    def map_to_arguments options
+      mapped_options = {}
+      options.each do |key, value|
+        if self.class.options_to_arguments.has_key?(key)
+          mapped_options[self.class.options_to_arguments[key]] = value
+        else
+          mapped_options[key] = value
+        end
+      end
+
+      mapped_options
+    end
+
   end
 end
