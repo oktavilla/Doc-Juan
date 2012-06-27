@@ -23,7 +23,7 @@ describe 'DocJuan' do
   describe '/render' do
 
     before do
-      ENV['DOC_JUAN_SECRET'] = 'zecret'
+      DocJuan::Auth.any_instance.stubs(:secret).returns 'zecret'
     end
 
     describe 'requires a valid key' do

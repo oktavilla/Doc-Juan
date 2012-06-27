@@ -1,11 +1,11 @@
 require 'sinatra/base'
-require_relative '../auth'
+require_relative 'auth'
 
 module DocJuan
   class App < Sinatra::Base
 
     before '/render*' do
-      halt 401, 'Invalid key' unless Auth.valid_request?(request)
+      halt 401, 'Invalid key' unless DocJuan::Auth.valid_request?(request)
     end
 
     # empty page on index
