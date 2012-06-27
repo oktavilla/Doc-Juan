@@ -1,7 +1,7 @@
 Doc-Juan
 =======
 
-A seductive API for converting HTML documents into specified format. Relies on nginx's [XSendfile](http://wiki.nginx.org/XSendfile) for deliverying converted documents.
+A seductive API for converting HTML documents into specified format. Relies on nginx's [XSendfile](http://wiki.nginx.org/XSendfile) for delivering converted documents.
 
 ## Endpoint
 
