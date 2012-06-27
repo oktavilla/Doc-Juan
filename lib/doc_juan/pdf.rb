@@ -114,7 +114,10 @@ module DocJuan
       bad_chars_regex = /[^0-9a-zA-Z\-\_\.\s]/
 
       options.delete_if { |k, v| !self.class.available_options.include?(k) }
+
       options[:print_stylesheet] = true if options.key? :print_stylesheet
+      options[:lowquality] = true if options.key? :lowquality
+
       options[:title].gsub!(bad_chars_regex, '') if options.key? :title
 
       if options.values.detect { |value| value.to_s =~ bad_chars_regex }
