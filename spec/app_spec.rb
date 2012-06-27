@@ -48,15 +48,14 @@ describe DocJuan::App do
 
     end
 
-    it 'returns a X-Accel-Redirect header pointing to the generated pdf' do
-      DocJuan::Pdf.any_instance.stubs(:run_command).returns true
-      DocJuan::Pdf.any_instance.stubs(:exists?).returns true
-      DocJuan::GeneratedPdf.any_instance.stubs(:path).returns '/path/to/doc'
+    it 'generates the pdf and returns a X-Accel-Redirect header pointing to it' do
+      pdf = stub path: '/path/to/doc', filename: 'invoice.pdf', mime_type: 'application/pdf', ok?: true
+      DocJuan::Pdf.any_instance.expects(:generate).returns pdf
 
       get "/render?url=#{url}&filename=#{filename}&key=#{key}"
 
       last_response.headers['X-Accel-Redirect'].must_equal '/path/to/doc'
-      last_response.headers['Content-Disposition'].must_equal "attachment; filename=\"#{filename}.pdf\""
+      last_response.headers['Content-Disposition'].must_equal "attachment; filename=\"invoice.pdf\""
     end
 
   end
