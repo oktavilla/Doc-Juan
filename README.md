@@ -69,7 +69,7 @@ Example:
 ## Requirements
 
 * [Ruby 1.9](http://www.ruby-lang.org)
-* [nginx](http://code.google.com/p/wkhtmltopdf/)
+* [nginx](http://nginx.org)
 * [wkhtmltopdf](http://code.google.com/p/wkhtmltopdf/) tested with v0.9.9
 
 ## Reference resources
