@@ -13,7 +13,7 @@ describe DocJuan::Pdf do
   it 'has a unique identifier' do
     pdf = DocJuan::Pdf.new(url, filename, options)
 
-    pdf.identifier.must_equal '9d9f70611b5217ddbea862a22c2edfc3'
+    pdf.identifier.must_equal '86922c355fdb96cedef3b9c2c4dbba12'
   end
 
   it 'strips junk from the filename' do

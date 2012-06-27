@@ -27,7 +27,9 @@ module DocJuan
     end
 
     def to_s
-      normalize_options(options).to_a.flatten.compact.join(' ')
+      normalized_options = normalize_options(options).to_a
+      normalized_options = normalized_options.sort_by { |o| o[0] }
+      normalized_options.flatten.compact.join(' ')
     end
 
     def [](key)

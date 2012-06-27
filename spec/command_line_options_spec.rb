@@ -24,9 +24,9 @@ describe DocJuan::CommandLineOptions do
     end
   end
 
-  it 'normalizes options when used as a string' do
-    clo = DocJuan::CommandLineOptions.new paper_size: 'A4', color: 'black', weight: 10
-    clo.to_s.must_equal '--paper-size "A4" --color "black" --weight "10"'
+  it 'normalizes options and sorts them when used as a string' do
+    clo = DocJuan::CommandLineOptions.new weight: 10, paper_size: 'A4', color: 'black'
+    clo.to_s.must_equal '--color "black" --paper-size "A4" --weight "10"'
   end
 
   it 'allows access to values by key' do
