@@ -48,7 +48,6 @@ API for converting HTML documents into specified format.
 	Content-Type: application/pdf
 	Content-Disposition: attachment; filename="a-document.pdf"
 	Cache-Control: public,max-age=2592000
-	Content-Length: 303288
 	
 	[pdf data]	
 
