@@ -11,24 +11,9 @@ module DocJuan
     def self.available_options
       [
         :title,
-        :regenerate,
-        :name,
-        :cover, :debug_javascript, :default_header,
-        :disable_external_links, :disable_internal_links,
-        :disable_javascript, :disable_pdf_compression,
-        :disable_smart_shrinking, :no_background,
-        :forms, :grayscale, :lowquality,
-        :zoom, :minimum_font_size,
         :orientation,
-        :margin_bottom, :margin_left, :margin_right, :margin_top,
         :page_height, :page_width, :page_size,
-        :page_offset,
         :print_media_type, :redirect_delay,
-        :replace,
-        :stop_slow_scripts,
-        :username, :password,
-        :outline, :outline_depth,
-        :user_style_sheet, :stylesheets
       ]
     end
 
