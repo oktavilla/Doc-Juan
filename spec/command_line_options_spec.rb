@@ -2,6 +2,14 @@ require_relative 'spec_helper'
 
 require_relative '../lib/doc_juan/command_line_options'
 
+unless defined? DocJuan.config
+  module DocJuan
+    def self.config
+      {}
+    end
+  end
+end
+
 describe DocJuan::CommandLineOptions do
 
   describe '#normalize options' do

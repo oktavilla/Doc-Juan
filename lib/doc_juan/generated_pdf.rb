@@ -10,5 +10,9 @@ module DocJuan
     def ok?
       !!@result
     end
+
+    def path
+      File.join DocJuan.config[:document_uri], @name
+    end
   end
 end

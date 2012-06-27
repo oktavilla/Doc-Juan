@@ -1,4 +1,5 @@
 require 'openssl'
+require_relative 'config'
 
 class Auth
 
@@ -23,6 +24,9 @@ class Auth
   def secret
     ENV['DOC_JUAN_SECRET']
   end
+    def secret
+      DocJuan.config[:secret]
+    end
 
   def self.valid_request? request
     params = request.params

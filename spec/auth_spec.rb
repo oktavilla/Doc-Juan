@@ -2,10 +2,8 @@ require_relative './spec_helper'
 
 require_relative '../lib/auth'
 
-describe 'Auth' do
-
-  before do
-    ENV['DOC_JUAN_SECRET'] = 'zecret'
+  before :each do
+    DocJuan.stubs(:config).returns(secret: 'zecret')
   end
 
   it 'has a secret based on env variable DOC_JUAN_SECRET' do
