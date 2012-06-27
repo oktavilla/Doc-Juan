@@ -66,20 +66,23 @@ module DocJuan
       File.exists? path
     end
 
-    def generated
-      pdf = GeneratedPdf.new identifier, exists?
+    def generated result = exists?
+      pdf = GeneratedPdf.new identifier, result
       pdf.filename = self.filename
       pdf
     end
 
     def generate
-      path = File.join directory, identifier
-      args = [self.class.executable]
-      args << %Q{"#{url}"}
-      args << %Q{"#{path}"}
-      args << options.to_s
+      unless exists?
+        path = File.join directory, identifier
+        args = [self.class.executable]
+        args << %Q{"#{url}"}
+        args << %Q{"#{path}"}
+        args << options.to_s
+        args << '--quiet'
 
-      run_command args.join(' ')
+        run_command args.join(' ')
+      end
 
       generated
     end

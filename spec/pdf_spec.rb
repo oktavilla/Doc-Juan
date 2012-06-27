@@ -33,9 +33,8 @@ describe DocJuan::Pdf do
 
   it 'has a generated pdf' do
     pdf = DocJuan::Pdf.new(url, filename, options)
-    File.stubs(:exists?).returns true
 
-    generated = pdf.generated
+    generated = pdf.generated true
 
     generated.path.must_equal "/documents/#{pdf.identifier}"
     generated.ok?.must_equal true
@@ -100,14 +99,24 @@ describe DocJuan::Pdf do
 
     subject { DocJuan::Pdf.new(url, filename, options) }
 
-    it 'passes the url, filename and options to wkhtmltopdf' do
-      subject.expects(:system).with("wkhtmltopdf \"#{url}\" \"/documents/#{subject.identifier}\" --page-size \"A5\"")
+    it 'creates the pdf with wkhtmltopdf' do
+      subject.stubs(:exists?).returns false
+      subject.expects(:system).with("wkhtmltopdf \"#{url}\" \"/documents/#{subject.identifier}\" --page-size \"A5\" --quiet")
 
       subject.generate
     end
 
+    it 'does not generate the pdf if it already exists' do
+      subject.stubs(:exists?).returns true
+      subject.expects(:run_command).never
+
+      result = subject.generate
+
+      result.ok?.must_equal true
+    end
+
     it 'returns a generated pdf with the path to the file' do
-      File.stubs(:exists?).returns true
+      subject.stubs(:exists?).returns true
       subject.stubs(:run_command).returns true
       result = subject.generate
 
