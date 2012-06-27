@@ -56,6 +56,7 @@ describe DocJuan::App do
 
       last_response.headers['X-Accel-Redirect'].must_equal '/path/to/doc'
       last_response.headers['Content-Disposition'].must_equal "attachment; filename=\"invoice.pdf\""
+      last_response.headers['Cache-Control'].must_equal "public,max-age=2592000"
     end
 
   end

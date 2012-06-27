@@ -19,6 +19,7 @@ module DocJuan
       if result.ok?
         headers['Content-Type'] = result.mime_type
         headers['Content-Disposition'] = "attachment; filename=\"#{result.filename}\""
+        headers['Cache-Control'] = 'public,max-age=2592000'
         headers['X-Accel-Redirect'] = result.path
       end
     end
