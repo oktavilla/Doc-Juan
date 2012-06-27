@@ -1,9 +1,9 @@
 Doc-Juan
 =======
 
-API for converting HTML documents into specified format. 
+A seductive API for converting HTML documents into specified format. Relies on nginx's [XSendfile](http://wiki.nginx.org/XSendfile) for deliverying converted documents.
 
-## Endpoints
+## Endpoint
 
 ### Render
 
@@ -35,11 +35,11 @@ API for converting HTML documents into specified format.
 * `height` - Page height in millimeters.
 * `size` - a4, letter etc. This will be ignored if width and height is set. [List of sizes](http://stackoverflow.com/questions/6394905/wkhtmltopdf-what-paper-sizes-are-valid).
 * `orientation` - `landscape` or `portrait`. Defaults to portrait.
-* `lowquality` - Renders the pdf in low quality when set to `true`
+* `lowquality` - Renders the pdf in low quality if set to `true`
 	
 #### Example
 	
-	/render.pdf?url=http://example.com/document.html&filename=a-document&options[page_size]=A4&key=ABCDEFG
+	/render?url=http://example.com/document.html&filename=a-document&options[page_size]=A4&key=ABCDEFG
 	
 #### Returned data
 
@@ -50,6 +50,27 @@ API for converting HTML documents into specified format.
 	Cache-Control: public,max-age=2592000
 	
 	[pdf data]	
+	
+## Configuration
+
+Doc-Juan is configured by environment variables. The following config variables are available:
+
+* `DOC_JUAN_SECRET` - secret for generating key.
+* `DOC_JUAN_DOCUMENT_PATH` - directory to put generated documents.
+* `DOC_JUAN_DOCUMENT_URI` - what path the `DOC_JUAN_DOCUMENT_PATH` directory is available via nginx.
+
+Example:
+	
+	DOC_JUAN_SECRET=thesupersecret
+	DOC_JUAN_DOCUMENT_PATH=/app/shared/documents
+	DOC_JUAN_DOCUMENT_URI=/documents
+	
+
+## Requirements
+
+* [Ruby 1.9](http://www.ruby-lang.org)
+* [nginx](http://code.google.com/p/wkhtmltopdf/)
+* [wkhtmltopdf](http://code.google.com/p/wkhtmltopdf/) tested with v0.9.9
 
 ## Reference resources
 
