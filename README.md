@@ -69,7 +69,7 @@ Example:
 
 Doc-Juan supports error notifications with AirBrake.
 
-To enable AirBrake support, set the environmnet variable `AIRBRAKE_API_KEY` to your airbrake api key.
+To enable AirBrake support, set the environment variable `AIRBRAKE_API_KEY` to your airbrake api key.
 
 ## Requirements
 
@@ -94,7 +94,7 @@ http://wiki.nginx.org/XSendfile
 ## Future
 
 * PNG / JPEG output support
-* Stats to detect load
+* Stats for detecting load
 * HTTP authentication support
 
 ## Contributing
