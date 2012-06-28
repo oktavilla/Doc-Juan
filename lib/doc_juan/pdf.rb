@@ -18,7 +18,8 @@ module DocJuan
         :orientation,
         :height, :width, :size,
         :print_stylesheet,
-        :encoding
+        :encoding,
+        :username, :password
       ]
     end
 

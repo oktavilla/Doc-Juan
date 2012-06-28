@@ -95,7 +95,6 @@ http://wiki.nginx.org/XSendfile
 
 * PNG / JPEG output support
 * Stats for detecting load
-* HTTP authentication support
 
 ## Contributing
 
