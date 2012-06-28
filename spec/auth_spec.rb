@@ -27,10 +27,10 @@ describe DocJuan::Auth do
   end
 
   it 'creates a message based' do
-    params = { 'kittehz' => 'please', 'hello' => 'there' }
+    params = { 'kittehz' => 'please', 'hello' => 'there', 'boolean_field' => true }
     auth = DocJuan::Auth.new params
 
-    auth.message.must_equal 'hello:there-kittehz:please'
+    auth.message.must_equal 'boolean_field:true-hello:there-kittehz:please'
   end
 
   it 'creates a digest' do

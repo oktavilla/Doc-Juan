@@ -19,7 +19,9 @@ module DocJuan
     end
 
     def message
-      prepared_params.map {|k,v| "#{k}:#{v}" if v && !v.empty? }.join('-')
+      prepared_params.map do |k,v|
+        "#{k}:#{v}" if v && !v.to_s.strip.empty?
+      end.join '-'
     end
 
     def secret
