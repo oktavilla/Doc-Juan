@@ -72,6 +72,10 @@ Example:
 * [nginx](http://nginx.org)
 * [wkhtmltopdf](http://code.google.com/p/wkhtmltopdf/) tested with v0.9.9
 
+## Helper for generating Doc-Juan URLs
+
+[Doc-Juan-gem](https://github.com/Oktavilla/Doc-Juan-gem)
+
 ## Reference resources
 
 http://blog.jcoglan.com/2012/06/09/why-you-should-never-use-hash-functions-for-message-authentication/
