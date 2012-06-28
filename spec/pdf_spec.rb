@@ -43,7 +43,8 @@ describe DocJuan::Pdf do
   end
 
   it 'maps input options to wkhtmltopdf arguments' do
-    options = { height: 1, width: 2, size: 'A3', print_stylesheet: 'true', lowquality: 1 }
+    options = { :height => 1, 'width' => 2, :size => 'A3',
+                'print_stylesheet' => 'true', :lowquality => true }
     pdf = DocJuan::Pdf.new(url, filename, options)
 
     pdf.options[:page_height].must_equal 1

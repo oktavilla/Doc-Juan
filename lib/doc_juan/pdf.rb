@@ -108,11 +108,18 @@ module DocJuan
     end
 
     def prepare_options options
-      options = sanitize_options(options || {})
-      options = self.class.default_options.merge options
-      options = map_to_arguments(options)
+      prepared_options = {}
 
-      options
+      # Symbolize keys
+      (options || {}).each do |k, v|
+        prepared_options[k.to_sym] = v
+      end
+
+      prepared_options = sanitize_options prepared_options
+      prepared_options = self.class.default_options.merge prepared_options
+      prepared_options = map_to_arguments prepared_options
+
+      prepared_options
     end
 
     def sanitize_options options
