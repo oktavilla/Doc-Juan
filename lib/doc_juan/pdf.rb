@@ -23,12 +23,16 @@ module DocJuan
       @url = url
       @filename = sanitize_filename filename
 
-      options = PdfOptions.prepare options
-      @options = DocJuan::CommandLineOptions.new options
+      @options = PdfOptions.prepare options
+    end
     end
 
     def identifier
-      @identifier ||= Digest::MD5.hexdigest [url, options.to_s].join(' ')
+      @identifier ||= Digest::MD5.hexdigest [url, command_line_options.to_s].join(' ')
+    end
+
+    def command_line_options
+      @command_line_options ||= DocJuan::CommandLineOptions.new options
     end
 
     def path
@@ -51,7 +55,7 @@ module DocJuan
         args = [self.class.executable]
         args << %Q{"#{url}"}
         args << %Q{"#{path}"}
-        args << options.to_s
+        args << command_line_options.to_s
         args << '--quiet'
 
         run_command args.join(' ')
