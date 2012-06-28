@@ -1,4 +1,5 @@
 require 'addressable/uri'
+
 require_relative 'config'
 require_relative 'command_line_options'
 require_relative 'generated_pdf'
@@ -108,12 +109,7 @@ module DocJuan
     end
 
     def prepare_options options
-      prepared_options = {}
-
-      # Symbolize keys
-      (options || {}).each do |k, v|
-        prepared_options[k.to_sym] = v
-      end
+      prepared_options = (options || {}).symbolize_keys
 
       prepared_options = sanitize_options prepared_options
       prepared_options = self.class.default_options.merge prepared_options
@@ -132,9 +128,7 @@ module DocJuan
 
       options[:title].gsub!(bad_chars_regex, '') if options.key? :title
 
-      if options.values.detect { |value| value.to_s =~ bad_chars_regex }
-        raise BadOptionValueError
-      end
+      raise BadOptionValueError if options.values.detect { |value| value.to_s =~ bad_chars_regex }
 
       options
     end

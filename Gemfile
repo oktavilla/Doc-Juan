@@ -2,6 +2,7 @@ source :rubygems
 
 gem 'sinatra', '~> 1.3.2'
 gem 'addressable', '~> 2.2.8'
+gem 'activesupport', '~> 3.2.6'
 
 group :production do
   gem 'unicorn', '4.3.1'

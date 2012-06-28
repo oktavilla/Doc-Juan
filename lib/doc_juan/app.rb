@@ -27,4 +27,3 @@ module DocJuan
     end
   end
 end
-
