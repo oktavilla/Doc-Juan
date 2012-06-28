@@ -6,6 +6,7 @@ gem 'activesupport', '~> 3.2.6'
 
 group :production do
   gem 'unicorn', '4.3.1'
+  gem 'airbrake', '~> 3.1.1', require: false
 end
 
 group :test do

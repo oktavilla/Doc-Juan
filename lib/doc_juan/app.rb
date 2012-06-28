@@ -16,6 +16,7 @@ module DocJuan
     get '/render' do
       pdf = DocJuan::Pdf.new params[:url], params[:filename], params[:options]
       result = pdf.generate
+
       if result.ok?
         headers['Content-Type'] = result.mime_type
         headers['Content-Disposition'] = "attachment; filename=\"#{result.filename}\""
