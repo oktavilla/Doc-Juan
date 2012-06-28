@@ -23,8 +23,11 @@ module DocJuan
       @url = url
       @filename = sanitize_filename filename
 
-      @options = PdfOptions.prepare options
+      self.options = options
     end
+
+    def options= options
+      @options = PdfOptions.prepare options
     end
 
     def identifier

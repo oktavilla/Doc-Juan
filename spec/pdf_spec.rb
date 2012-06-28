@@ -10,6 +10,12 @@ describe DocJuan::Pdf do
     { size: 'A5' }
   end
 
+  it 'prepares the options' do
+    DocJuan::PdfOptions.expects(:prepare).with options
+
+    DocJuan::Pdf.new(url, filename, options)
+  end
+
   it 'has a unique identifier' do
     pdf = DocJuan::Pdf.new(url, filename, options)
 
@@ -40,45 +46,6 @@ describe DocJuan::Pdf do
     generated.ok?.must_equal true
     generated.filename.must_equal filename
     generated.mime_type.must_equal 'application/pdf'
-  end
-
-  it 'maps input options to wkhtmltopdf arguments' do
-    options = { :height => 1, 'width' => 2, :size => 'A3',
-                'print_stylesheet' => 'true', :lowquality => true }
-    pdf = DocJuan::Pdf.new(url, filename, options)
-
-    pdf.options[:page_height].must_equal 1
-    pdf.options[:page_width].must_equal 2
-    pdf.options[:page_size].must_equal 'A3'
-    pdf.options[:print_media_type].must_equal true
-    pdf.options[:lowquality].must_equal true
-  end
-
-  it 'sanitizes options' do
-    DocJuan::PdfOptions.stubs(:defaults).returns Hash.new
-    DocJuan::PdfOptions.stubs(:whitelist).returns [ :size ]
-
-    pdf = DocJuan::Pdf.new(url, filename, { size: 'A4', color: 'white' })
-    pdf.options.must_be :==, { page_size: 'A4'}
-  end
-
-  it 'raises BadOptionValueError on evil option values' do
-     proc do
-       pdf = DocJuan::Pdf.new(url, filename, { size: ';rm /' })
-     end.must_raise DocJuan::PdfOptions::BadValueError
-  end
-
-  it 'strips bad characters from options title' do
-    pdf = DocJuan::Pdf.new(url, filename, { title: ';rm /' })
-    pdf.options[:title].must_equal 'rm '
-  end
-
-  it 'appends default options' do
-    DocJuan::PdfOptions.stubs(:whitelist).returns [ :size, :color ]
-    DocJuan::PdfOptions.stubs(:defaults).returns(size: 'A4', color: 'black')
-
-    pdf = DocJuan::Pdf.new(url, filename, { color: 'white' })
-    pdf.options.must_be :==, { page_size: 'A4', color: 'white' }
   end
 
   it 'has a default executable' do
