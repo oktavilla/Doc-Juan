@@ -1,13 +1,13 @@
 require 'addressable/uri'
 
 require_relative 'config'
+require_relative 'pdf_options'
 require_relative 'command_line_options'
 require_relative 'generated_pdf'
 
 module DocJuan
   class Pdf
     class InvalidUrlError < StandardError; end
-    class BadOptionValueError < StandardError; end
 
     attr_reader :url, :filename, :options
 
@@ -55,7 +55,8 @@ module DocJuan
       @url = url
       @filename = sanitize_filename filename
 
-      @options = DocJuan::CommandLineOptions.new prepare_options(options)
+      options = PdfOptions.prepare options
+      @options = DocJuan::CommandLineOptions.new options
     end
 
     def identifier

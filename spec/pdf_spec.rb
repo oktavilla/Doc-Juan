@@ -55,8 +55,8 @@ describe DocJuan::Pdf do
   end
 
   it 'sanitizes options' do
-    DocJuan::Pdf.stubs(:default_options).returns Hash.new
-    DocJuan::Pdf.stubs(:available_options).returns [ :size ]
+    DocJuan::PdfOptions.stubs(:defaults).returns Hash.new
+    DocJuan::PdfOptions.stubs(:whitelist).returns [ :size ]
 
     pdf = DocJuan::Pdf.new(url, filename, { size: 'A4', color: 'white' })
     pdf.options.must_be :==, { page_size: 'A4'}
@@ -65,7 +65,7 @@ describe DocJuan::Pdf do
   it 'raises BadOptionValueError on evil option values' do
      proc do
        pdf = DocJuan::Pdf.new(url, filename, { size: ';rm /' })
-     end.must_raise DocJuan::Pdf::BadOptionValueError
+     end.must_raise DocJuan::PdfOptions::BadValueError
   end
 
   it 'strips bad characters from options title' do
@@ -74,8 +74,8 @@ describe DocJuan::Pdf do
   end
 
   it 'appends default options' do
-    DocJuan::Pdf.stubs(:available_options).returns [ :size, :color ]
-    DocJuan::Pdf.stubs(:default_options).returns(size: 'A4', color: 'black')
+    DocJuan::PdfOptions.stubs(:whitelist).returns [ :size, :color ]
+    DocJuan::PdfOptions.stubs(:defaults).returns(size: 'A4', color: 'black')
 
     pdf = DocJuan::Pdf.new(url, filename, { color: 'white' })
     pdf.options.must_be :==, { page_size: 'A4', color: 'white' }
@@ -94,7 +94,7 @@ describe DocJuan::Pdf do
 
   describe '#generate' do
     before :each do
-      DocJuan::Pdf.stubs(:default_options).returns Hash.new
+      DocJuan::PdfOptions.stubs(:defaults).returns Hash.new
       DocJuan::Pdf.any_instance.stubs(:directory).returns '/documents'
     end
 
