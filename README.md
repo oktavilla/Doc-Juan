@@ -65,6 +65,11 @@ Example:
 	DOC_JUAN_DOCUMENT_PATH=/app/shared/documents
 	DOC_JUAN_DOCUMENT_URI=/documents
 	
+### Error notifications
+
+Doc-Juan supports error notifications with AirBrake.
+
+To enable AirBrake support, set the environmnet variable `AIRBRAKE_API_KEY` to your airbrake api key.
 
 ## Requirements
 
