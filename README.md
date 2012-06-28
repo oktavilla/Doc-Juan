@@ -79,7 +79,7 @@ To enable AirBrake support, set the environmnet variable `AIRBRAKE_API_KEY` to y
 
 ## Helper for generating Doc-Juan URLs
 
-[Doc-Juan-gem](https://github.com/Oktavilla/Doc-Juan-gem)
+[Doc-Juan-Helper](https://github.com/Oktavilla/Doc-Juan-Helper)
 
 ## Reference resources
 
