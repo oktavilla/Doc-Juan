@@ -21,6 +21,8 @@ module DocJuan
         headers['Content-Disposition'] = "attachment; filename=\"#{result.filename}\""
         headers['Cache-Control'] = 'public,max-age=2592000'
         headers['X-Accel-Redirect'] = result.path
+      else
+        halt 422, 'Something went wrong'
       end
     end
   end

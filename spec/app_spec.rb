@@ -33,7 +33,7 @@ describe DocJuan::App do
 
     describe 'authorization' do
       before :each do
-        DocJuan::Pdf.any_instance.stubs(:run_command).returns true
+        DocJuan::Pdf.any_instance.stubs(:exists?).returns true
       end
 
       it 'returns a 401 (Unauthorized) when key is invalid' do
@@ -42,6 +42,7 @@ describe DocJuan::App do
       end
 
       it 'returns a 200 (OK) when key is valid' do
+
         get "/render?url=#{url}&filename=#{filename}&key=#{key}"
         last_response.status.must_equal 200
       end
@@ -57,6 +58,14 @@ describe DocJuan::App do
       last_response.headers['X-Accel-Redirect'].must_equal '/path/to/doc'
       last_response.headers['Content-Disposition'].must_equal "attachment; filename=\"invoice.pdf\""
       last_response.headers['Cache-Control'].must_equal "public,max-age=2592000"
+    end
+
+    it 'fails with a 422 if the pdf could not be generated' do
+      DocJuan::GeneratedPdf.any_instance.stubs(:ok?).returns false
+
+      get "/render?url=#{url}&filename=#{filename}&key=#{key}"
+
+      last_response.status.must_equal 422
     end
 
   end
