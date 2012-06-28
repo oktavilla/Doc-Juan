@@ -36,6 +36,8 @@ A seductive API for converting HTML documents into specified format. Relies on n
 * `size` - a4, letter etc. This will be ignored if width and height is set. [List of sizes](http://stackoverflow.com/questions/6394905/wkhtmltopdf-what-paper-sizes-are-valid).
 * `orientation` - `landscape` or `portrait`. Defaults to portrait.
 * `lowquality` - Renders the pdf in low quality if set to `true`
+* `username` - Username for HTTP authentication
+* `password` - Password for HTTP authentication
 	
 #### Example
 	
