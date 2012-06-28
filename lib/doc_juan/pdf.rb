@@ -16,7 +16,8 @@ module DocJuan
         :lowquality,
         :orientation,
         :height, :width, :size,
-        :print_stylesheet
+        :print_stylesheet,
+        :encoding
       ]
     end
 
@@ -26,7 +27,8 @@ module DocJuan
         margin_top:    '0mm',
         margin_right:  '0mm',
         margin_bottom: '0mm',
-        margin_left:   '0mm'
+        margin_left:   '0mm',
+        encoding:      'UTF-8'
       }
     end
 
