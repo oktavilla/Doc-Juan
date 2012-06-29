@@ -59,6 +59,25 @@ describe DocJuan::Pdf do
     DocJuan::Pdf.executable = nil
   end
 
+  describe '#run_command' do
+
+    it 'returns the status and output of the command' do
+      pdf = DocJuan::Pdf.new(url, filename, options)
+      status, output = pdf.run_command 'echo', 'monkey-wrench'
+
+      status.must_equal true
+      output.must_equal 'monkey-wrench'
+    end
+
+    it 'raises FailedRunningCommandError with the output in the message if the command fails' do
+      pdf = DocJuan::Pdf.new(url, filename, options)
+      proc {
+        pdf.run_command 'ls', 'nonexistant'
+      }.must_raise DocJuan::Pdf::FailedRunningCommandError
+    end
+
+  end
+
   describe '#generate' do
     before :each do
       DocJuan::PdfOptions.stubs(:defaults).returns Hash.new
@@ -67,19 +86,22 @@ describe DocJuan::Pdf do
 
     subject { DocJuan::Pdf.new(url, filename, options) }
 
-    it 'returns the status and output of the command' do
-      status, output = subject.run_command 'echo monkey-wrench'
-      status.must_equal true
-      output.must_equal 'monkey-wrench'
-    end
-
     it 'creates the pdf with wkhtmltopdf' do
       subject.stubs(:exists?).returns false
       subject.expects(:run_command).
-        with(%Q{wkhtmltopdf "#{url}" "/documents/#{subject.identifier}" --page-size "A5" --quiet}).
+        with('wkhtmltopdf', %Q{"#{url}" "/documents/#{subject.identifier}" --page-size "A5" --quiet}).
         returns [true, '']
 
       subject.generate
+    end
+
+    it 'notifies about errors and raises CouldNotGeneratePdfError if failed' do
+      subject.expects(:run_command).raises DocJuan::Pdf::FailedRunningCommandError, '=('
+      DocJuan.expects(:log).with '=('
+
+      proc {
+        subject.generate
+      }.must_raise DocJuan::Pdf::CouldNotGeneratePdfError
     end
 
     it 'does not generate the pdf if it already exists' do

@@ -1,5 +1,6 @@
 require 'addressable/uri'
 
+require_relative 'logger'
 require_relative 'config'
 require_relative 'pdf_options'
 require_relative 'command_line_options'
@@ -8,6 +9,8 @@ require_relative 'generated_pdf'
 module DocJuan
   class Pdf
     class InvalidUrlError < StandardError; end
+    class FailedRunningCommandError < StandardError; end
+    class CouldNotGeneratePdfError < StandardError; end
 
     attr_reader :url, :filename, :options
 
@@ -55,31 +58,40 @@ module DocJuan
     def generate
       unless exists?
         path = File.join directory, identifier
-        args = [self.class.executable]
+        args = []
         args << %Q{"#{url}"}
         args << %Q{"#{path}"}
         args << command_line_options.to_s
         args << '--quiet'
 
-        run_command args.join(' ')
+        begin
+          run_command self.class.executable, args.join(' ')
+        rescue FailedRunningCommandError => e
+          DocJuan.log e.message
+          raise CouldNotGeneratePdfError.new e.message
+        end
       end
 
       generated
     end
 
-    def run_command command
+    def run_command command, command_options
       output = ''
 
       pid, status = DocJuan.log "Processing: #{url}" do
         rd, wr = IO.pipe
 
-        pid = Process.spawn command, [:out, :err] => wr
+        pid = Process.spawn [command, command_options].join(' '), [:out, :err] => wr
         wr.close
 
         output << rd.read.to_s.strip
         rd.close
 
         Process.waitpid2 pid
+      end
+
+      unless status.success?
+        raise FailedRunningCommandError.new "Failed running #{command}: #{output}"
       end
 
       [status.success?, output]

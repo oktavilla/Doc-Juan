@@ -60,12 +60,13 @@ describe DocJuan::App do
       last_response.headers['Cache-Control'].must_equal "public,max-age=2592000"
     end
 
-    it 'fails with a 422 if the pdf could not be generated' do
-      DocJuan::GeneratedPdf.any_instance.stubs(:ok?).returns false
+    it 'fails with a 500 if the pdf could not be generated' do
+      DocJuan::Pdf.any_instance.stubs(:exists?).returns false
+      DocJuan::Pdf.any_instance.expects(:generate).raises DocJuan::Pdf::CouldNotGeneratePdfError
 
-      get "/render?url=#{url}&filename=#{filename}&key=#{key}"
+      get "/render", { url: url, filename: filename, key: key }
 
-      last_response.status.must_equal 422
+      last_response.status.must_equal 500
     end
 
   end
