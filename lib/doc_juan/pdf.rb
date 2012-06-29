@@ -68,7 +68,21 @@ module DocJuan
     end
 
     def run_command command
-      system command
+      output = ''
+
+      pid, status = DocJuan.log "Processing: #{url}" do
+        rd, wr = IO.pipe
+
+        pid = Process.spawn command, [:out, :err] => wr
+        wr.close
+
+        output << rd.read.to_s.strip
+        rd.close
+
+        Process.waitpid2 pid
+      end
+
+      [status.success?, output]
     end
 
     def directory

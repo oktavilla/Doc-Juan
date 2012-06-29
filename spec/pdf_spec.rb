@@ -67,9 +67,17 @@ describe DocJuan::Pdf do
 
     subject { DocJuan::Pdf.new(url, filename, options) }
 
+    it 'returns the status and output of the command' do
+      status, output = subject.run_command 'echo monkey-wrench'
+      status.must_equal true
+      output.must_equal 'monkey-wrench'
+    end
+
     it 'creates the pdf with wkhtmltopdf' do
       subject.stubs(:exists?).returns false
-      subject.expects(:system).with("wkhtmltopdf \"#{url}\" \"/documents/#{subject.identifier}\" --page-size \"A5\" --quiet")
+      subject.expects(:run_command).
+        with(%Q{wkhtmltopdf "#{url}" "/documents/#{subject.identifier}" --page-size "A5" --quiet}).
+        returns [true, '']
 
       subject.generate
     end
@@ -85,7 +93,7 @@ describe DocJuan::Pdf do
 
     it 'returns a generated pdf with the path to the file' do
       subject.stubs(:exists?).returns true
-      subject.stubs(:run_command).returns true
+      subject.stubs(:run_command).returns [true, '']
       result = subject.generate
 
       result.path.must_equal "/documents/#{subject.identifier}"
