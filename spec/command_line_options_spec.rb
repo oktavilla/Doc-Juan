@@ -18,10 +18,17 @@ describe DocJuan::CommandLineOptions do
       clo.normalize_options(paper_size: 'A4', path: '/').keys.must_equal ['--paper-size', '--path']
     end
 
-    it 'converts boolean values to nil' do
+    it 'converts true to nil' do
       clo = DocJuan::CommandLineOptions.new
       clo.normalize_options(ignore_whitespace: true).must_equal '--ignore-whitespace' => nil
     end
+
+    it 'ignores false values' do
+      clo = DocJuan::CommandLineOptions.new
+      clo.normalize_options(ignore_whitespace: false, lowquality: true).must_equal '--lowquality' => nil
+
+    end
+
   end
 
   it 'normalizes options and sorts them when used as a string' do

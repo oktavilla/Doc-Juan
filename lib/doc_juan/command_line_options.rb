@@ -19,6 +19,7 @@ module DocJuan
     def normalize_options options
       normalized_options = {}
       options.each do |k, v|
+        next unless v
         key = "--#{k}".to_s.gsub(/[^a-z0-9\-]/, '-')
         normalized_options[key] = v.is_a?(TrueClass) ? nil : %Q{"#{v.to_s}"}
       end
