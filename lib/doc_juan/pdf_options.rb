@@ -1,7 +1,7 @@
 require 'active_support/all'
 
 module DocJuan
-  module PdfOptions
+  class PdfOptions
 
     class BadValueError < StandardError; end
 
@@ -36,18 +36,24 @@ module DocJuan
     }
 
     def self.prepare options
-      options = (options || {}).symbolize_keys
-      options = self.sanitize options
-      options = self.defaults.merge options
-      self.typecast_booleans options
-      options = self.convert_keys options
-
-      options
+      new(options).prepare
     end
 
-    def self.sanitize options
+    def initialize options
+      @options = (options || {}).symbolize_keys
+    end
+
+    def prepare
+      @options = sanitize @options
+      @options = self.class.defaults.merge @options
+      @options = typecast_booleans @options
+      @options = convert_keys @options
+      @options
+    end
+
+    def sanitize options
       evil_chars = /[^0-9a-zA-Z\-\_\.\s]/
-      options.delete_if { |k, v| !self.whitelist.include?(k) }
+      options.delete_if { |k, v| !self.class.whitelist.include?(k) }
 
       options[:title].gsub!(evil_chars, '') if options.key? :title
 
@@ -56,11 +62,11 @@ module DocJuan
       options
     end
 
-    def self.convert_keys options
+    def convert_keys options
       mapped = {}
       options.each do |key, value|
-        if self.conversions.key? key
-          mapped[self.conversions[key]] = value
+        if self.class.conversions.key? key
+          mapped[self.class.conversions[key]] = value
         else
           mapped[key] = value
         end
@@ -69,10 +75,12 @@ module DocJuan
       mapped
     end
 
-    def self.typecast_booleans options
+    def typecast_booleans options
       options.find_all { |k, v| ['true', 'false' ].include? v.to_s }.each do |k, v|
         options[k] = (v.to_s == 'true' ? true : false)
       end
+
+      options
     end
 
   end
