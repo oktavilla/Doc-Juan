@@ -5,7 +5,7 @@ module DocJuan
     attr_accessor :logger
   end
 
-  self.logger = Logger.new STDOUT
+  self.logger = Logger.new STDERR
 
   def self.log message
     result = nil
