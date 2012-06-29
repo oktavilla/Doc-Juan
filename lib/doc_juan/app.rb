@@ -4,6 +4,8 @@ require_relative 'auth'
 module DocJuan
   class App < Sinatra::Base
 
+    enable :logging
+
     before '/render*' do
       halt 401, 'Invalid key' unless DocJuan::Auth.valid_request?(request)
     end
