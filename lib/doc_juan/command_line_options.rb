@@ -28,7 +28,7 @@ module DocJuan
     end
 
     def to_argument_string
-      Hash[normalize_options(options).sort].to_a.flatten.compact.join(' ')
+      normalize_options(options).to_a.flatten.compact.join(' ')
     end
 
     def [](key)

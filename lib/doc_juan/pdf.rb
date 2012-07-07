@@ -34,7 +34,7 @@ module DocJuan
     end
 
     def identifier
-      @identifier ||= Digest::MD5.hexdigest [url, command_line_options.to_argument_string].join(' ')
+      @identifier ||= Digest::MD5.hexdigest [url, options.sort.join].join('-')
     end
 
     def command_line_options
