@@ -78,6 +78,7 @@ describe DocJuan::Pdf do
 
   end
 
+
   describe '#generate' do
     before :each do
       DocJuan::PdfOptions.stubs(:defaults).returns Hash.new
@@ -93,6 +94,21 @@ describe DocJuan::Pdf do
         returns [true, '']
 
       subject.generate
+    end
+
+    describe 'http auth' do
+
+      subject { DocJuan::Pdf.new(url, filename, options.merge({ :username => 'username', :password => 'password' }) ) }
+
+      it 'creates the pdf with wkhtmltopdf' do
+        subject.stubs(:exists?).returns false
+        subject.expects(:run_command).
+          with('wkhtmltopdf', %Q{"#{url}" "/documents/#{subject.identifier}" --page-size "A5" --password \"password\" --username \"username\" --quiet}).
+          returns [true, '']
+
+        subject.generate
+      end
+
     end
 
     it 'notifies about errors and raises CouldNotGeneratePdfError if failed' do
@@ -124,4 +140,5 @@ describe DocJuan::Pdf do
       result.mime_type.must_equal 'application/pdf'
     end
   end
+
 end
