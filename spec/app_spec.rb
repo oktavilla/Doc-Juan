@@ -62,7 +62,7 @@ describe DocJuan::App do
 
     it 'fails with a 500 if the pdf could not be generated' do
       DocJuan::Pdf.any_instance.stubs(:exists?).returns false
-      DocJuan::Pdf.any_instance.expects(:generate).raises DocJuan::Pdf::CouldNotGeneratePdfError
+      DocJuan::Pdf.any_instance.expects(:generate).raises DocJuan::CouldNotGenerateFileError
 
       get "/render", { url: url, filename: filename, key: key }
 

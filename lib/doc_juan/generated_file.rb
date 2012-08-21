@@ -1,6 +1,7 @@
 module DocJuan
-  class GeneratedPdf
+  class GeneratedFile
     attr_accessor :filename
+    attr_accessor :mime_type
 
     def initialize name, result
       @name = name
@@ -15,8 +16,5 @@ module DocJuan
       File.join DocJuan.config[:document_uri], @name
     end
 
-    def mime_type
-      'application/pdf'
-    end
   end
 end

@@ -10,15 +10,8 @@ describe DocJuan::Pdf do
     { size: 'A5' }
   end
 
-  it 'prepares the options' do
-    DocJuan::PdfOptions.expects(:prepare).with options
-
-    DocJuan::Pdf.new(url, filename, options)
-  end
-
-  it 'has a unique identifier created by the url and sorted options' do
-    pdf = DocJuan::Pdf.new url, filename
-    pdf.stubs(:options).returns size: 'A5', lowquality: true
+  it 'has a unique identifier' do
+    pdf = DocJuan::Pdf.new(url, filename, options)
 
     pdf.identifier.must_equal Digest::MD5.hexdigest 'http://example.com-lowqualitytruesizeA5'
   end
@@ -53,13 +46,6 @@ describe DocJuan::Pdf do
     DocJuan::Pdf.executable.must_equal 'wkhtmltopdf'
   end
 
-  it 'sets a new executable path' do
-    DocJuan::Pdf.executable = '/usr/local/bin/wkhtmltopdf'
-    DocJuan::Pdf.executable.must_equal'/usr/local/bin/wkhtmltopdf'
-
-    DocJuan::Pdf.executable = nil
-  end
-
   describe '#run_command' do
 
     it 'returns the status and output of the command' do
@@ -74,7 +60,7 @@ describe DocJuan::Pdf do
       pdf = DocJuan::Pdf.new(url, filename, options)
       proc {
         pdf.run_command 'ls', 'nonexistant'
-      }.must_raise DocJuan::Pdf::FailedRunningCommandError
+      }.must_raise DocJuan::FailedRunningCommandError
     end
 
   end
@@ -82,7 +68,7 @@ describe DocJuan::Pdf do
 
   describe '#generate' do
     before :each do
-      DocJuan::PdfOptions.stubs(:defaults).returns Hash.new
+      DocJuan::Pdf.options[:defaults] = Hash.new
       DocJuan::Pdf.any_instance.stubs(:directory).returns '/documents'
     end
 
@@ -112,13 +98,13 @@ describe DocJuan::Pdf do
 
     end
 
-    it 'notifies about errors and raises CouldNotGeneratePdfError if failed' do
-      subject.expects(:run_command).raises DocJuan::Pdf::FailedRunningCommandError, '=('
+    it 'notifies about errors and raises CouldNotGenerateFileError if failed' do
+      subject.expects(:run_command).raises DocJuan::FailedRunningCommandError, '=('
       DocJuan.expects(:log).with '=('
 
       proc {
         subject.generate
-      }.must_raise DocJuan::Pdf::CouldNotGeneratePdfError
+      }.must_raise DocJuan::CouldNotGenerateFileError
     end
 
     it 'does not generate the pdf if it already exists' do
