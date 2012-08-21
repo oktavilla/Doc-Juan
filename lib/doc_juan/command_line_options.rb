@@ -27,8 +27,8 @@ module DocJuan
       normalized_options
     end
 
-    def to_s
-      Hash[normalize_options(options).sort].to_a.flatten.compact.join(' ')
+    def to_argument_string
+      normalize_options(options).to_a.flatten.compact.join(' ')
     end
 
     def [](key)

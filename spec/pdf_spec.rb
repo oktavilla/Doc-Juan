@@ -16,10 +16,11 @@ describe DocJuan::Pdf do
     DocJuan::Pdf.new(url, filename, options)
   end
 
-  it 'has a unique identifier' do
-    pdf = DocJuan::Pdf.new(url, filename, options)
+  it 'has a unique identifier created by the url and sorted options' do
+    pdf = DocJuan::Pdf.new url, filename
+    pdf.stubs(:options).returns size: 'A5', lowquality: true
 
-    pdf.identifier.must_equal '71ff89abc1094cff8c216841028755b1'
+    pdf.identifier.must_equal Digest::MD5.hexdigest 'http://example.com-lowqualitytruesizeA5'
   end
 
   it 'strips junk from the filename' do
