@@ -72,10 +72,9 @@ module DocJuan
       unless exists?
         path = File.join directory, identifier
         args = []
+        args << command_line_options.to_s
         args << %Q{"#{url}"}
         args << %Q{"#{path}"}
-        args << command_line_options.to_s
-        args << '--quiet'
 
         begin
           run_command self.class.executable, args.join(' ')

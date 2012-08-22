@@ -129,7 +129,7 @@ describe 'GeneratorBase' do
     it 'creates the pdf with wkhtmltopdf' do
       file.stubs(:exists?).returns false
       file.expects(:run_command).
-        with('wkhtmltopdf', %Q{"#{url}" "#{Dir.tmpdir}/#{file.identifier}" --page-size "A5" --quiet}).
+        with('wkhtmltopdf', %Q{--page-size "A5" "#{url}" "#{Dir.tmpdir}/#{file.identifier}"}).
         returns [true, '']
 
       file.generate
@@ -141,7 +141,7 @@ describe 'GeneratorBase' do
 
         file.stubs(:exists?).returns false
         file.expects(:run_command).
-          with('wkhtmltopdf', %Q{"#{url}" "#{Dir.tmpdir}/#{file.identifier}" --page-size "A5" --password \"password\" --username \"username\" --quiet}).
+          with('wkhtmltopdf', %Q{--page-size "A5" --password \"password\" --username \"username\" "#{url}" "#{Dir.tmpdir}/#{file.identifier}"}).
           returns [true, '']
 
         file.generate

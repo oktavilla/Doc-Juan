@@ -77,7 +77,7 @@ describe DocJuan::Pdf do
     it 'creates the pdf with wkhtmltopdf' do
       subject.stubs(:exists?).returns false
       subject.expects(:run_command).
-        with('wkhtmltopdf', %Q{"#{url}" "/documents/#{subject.identifier}" --page-size "A5" --quiet}).
+        with('wkhtmltopdf', %Q{--page-size "A5" "#{url}" "/documents/#{subject.identifier}"}).
         returns [true, '']
 
       subject.generate
@@ -90,7 +90,7 @@ describe DocJuan::Pdf do
       it 'creates the pdf with wkhtmltopdf' do
         subject.stubs(:exists?).returns false
         subject.expects(:run_command).
-          with('wkhtmltopdf', %Q{"#{url}" "/documents/#{subject.identifier}" --page-size "A5" --password \"password\" --username \"username\" --quiet}).
+          with('wkhtmltopdf', %Q{--page-size "A5" --password \"password\" --username \"username\" "#{url}" "/documents/#{subject.identifier}"}).
           returns [true, '']
 
         subject.generate

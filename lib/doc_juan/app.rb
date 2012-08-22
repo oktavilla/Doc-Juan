@@ -28,8 +28,9 @@ module DocJuan
 
     # render a html page to a document
     get '/render' do
-      pdf = DocJuan::Pdf.new params[:url], params[:filename], params[:options]
-      result = pdf.generate
+      renderer_class = params[:format] == 'jpg' ? DocJuan::Jpg : DocJuan::Pdf
+      renderer = renderer_class.new(params[:url], params[:filename], params[:options])
+      result = renderer.generate
 
       headers['Content-Type'] = result.mime_type
       headers['Content-Disposition'] = "attachment; filename=\"#{result.filename}\""

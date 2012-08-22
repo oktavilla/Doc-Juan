@@ -18,7 +18,8 @@ module DocJuan
         margin_right:  '0mm',
         margin_bottom: '0mm',
         margin_left:   '0mm',
-        encoding:      'UTF-8'
+        encoding:      'UTF-8',
+        quiet:         true
       },
       conversions: {
         size: :page_size,
