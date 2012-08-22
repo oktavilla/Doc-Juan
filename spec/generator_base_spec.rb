@@ -69,8 +69,9 @@ describe 'GeneratorBase' do
 
   it 'has a unique identifier' do
     file = subject.new(url, filename, options)
+    file.stubs(:options).returns size: 'A5', lowquality: true
 
-    file.identifier.must_equal '9d4312c441f71c5e6af79eb73fb2603b'
+    file.identifier.must_equal Digest::MD5.hexdigest 'http://example.com-lowqualitytruesizeA5'
   end
 
   it 'strips junk from the filename' do
@@ -141,7 +142,7 @@ describe 'GeneratorBase' do
 
         file.stubs(:exists?).returns false
         file.expects(:run_command).
-          with('wkhtmltopdf', %Q{--page-size "A5" --password \"password\" --username \"username\" "#{url}" "#{Dir.tmpdir}/#{file.identifier}"}).
+          with('wkhtmltopdf', %Q{--page-size "A5" --username \"username\" --password \"password\" "#{url}" "#{Dir.tmpdir}/#{file.identifier}"}).
           returns [true, '']
 
         file.generate

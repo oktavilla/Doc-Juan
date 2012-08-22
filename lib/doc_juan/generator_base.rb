@@ -46,7 +46,7 @@ module DocJuan
     end
 
     def identifier
-      @identifier ||= Digest::MD5.hexdigest [url, command_line_options.to_s].join(' ')
+      @identifier ||= Digest::MD5.hexdigest [url, options.sort.join].join('-')
     end
 
     def command_line_options
@@ -72,7 +72,7 @@ module DocJuan
       unless exists?
         path = File.join directory, identifier
         args = []
-        args << command_line_options.to_s
+        args << command_line_options.to_argument_string
         args << %Q{"#{url}"}
         args << %Q{"#{path}"}
 

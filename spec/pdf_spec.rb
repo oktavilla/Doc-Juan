@@ -11,7 +11,8 @@ describe DocJuan::Pdf do
   end
 
   it 'has a unique identifier' do
-    pdf = DocJuan::Pdf.new(url, filename, options)
+    pdf = DocJuan::Pdf.new url, filename
+    pdf.stubs(:options).returns size: 'A5', lowquality: true
 
     pdf.identifier.must_equal Digest::MD5.hexdigest 'http://example.com-lowqualitytruesizeA5'
   end
@@ -90,7 +91,7 @@ describe DocJuan::Pdf do
       it 'creates the pdf with wkhtmltopdf' do
         subject.stubs(:exists?).returns false
         subject.expects(:run_command).
-          with('wkhtmltopdf', %Q{--page-size "A5" --password \"password\" --username \"username\" "#{url}" "/documents/#{subject.identifier}"}).
+          with('wkhtmltopdf', %Q{--page-size "A5" --username \"username\" --password \"password\" "#{url}" "/documents/#{subject.identifier}"}).
           returns [true, '']
 
         subject.generate
