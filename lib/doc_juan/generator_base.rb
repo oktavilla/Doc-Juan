@@ -90,8 +90,6 @@ module DocJuan
     def run_command command, command_options
       output = ''
 
-      DocJuan.log "#{command} #{command_options}"
-
       pid, status = DocJuan.log "Processing: #{url}" do
         rd, wr = IO.pipe
 
