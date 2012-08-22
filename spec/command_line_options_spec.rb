@@ -26,14 +26,12 @@ describe DocJuan::CommandLineOptions do
     it 'ignores false values' do
       clo = DocJuan::CommandLineOptions.new
       clo.normalize_options(ignore_whitespace: false, lowquality: true).must_equal '--lowquality' => nil
-
     end
-
   end
 
-  it 'normalizes options and sorts them when used as a string' do
-    clo = DocJuan::CommandLineOptions.new weight: 10, paper_size: 'A4', color: 'black', whitespace: true
-    clo.to_s.must_equal '--color "black" --paper-size "A4" --weight "10" --whitespace'
+  it 'normalizes options when used as arguments' do
+    clo = DocJuan::CommandLineOptions.new weight: 10, paper_size: 'A4', whitespace: true
+    clo.to_argument_string.must_equal '--weight "10" --paper-size "A4" --whitespace'
   end
 
   it 'allows access to values by key' do
