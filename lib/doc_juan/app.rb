@@ -28,8 +28,8 @@ module DocJuan
 
     # render a html page to a document
     get '/render' do
-      renderer_class = params[:format] == 'jpg' ? DocJuan::Jpg : DocJuan::Pdf
-      renderer = renderer_class.new(params[:url], params[:filename], params[:options])
+      renderer_class = DocJuan.renderer params[:format]
+      renderer = renderer_class.new params[:url], params[:filename], params[:options]
       result = renderer.generate
 
       headers['Content-Type'] = result.mime_type
