@@ -14,7 +14,7 @@ module DocJuan
     get '/' do
     end
 
-    error DocJuan::Pdf::CouldNotGeneratePdfError do
+    error DocJuan::CouldNotGenerateFileError do
       if defined? Airbrake
         error = request.env['sinatra.error']
         Airbrake.notify(
@@ -23,13 +23,14 @@ module DocJuan
           parameters: request.params
         )
       end
-      halt 500, 'Could not generate the PDF'
+      halt 500, 'Could not generate file'
     end
 
     # render a html page to a document
     get '/render' do
-      pdf = DocJuan::Pdf.new params[:url], params[:filename], params[:options]
-      result = pdf.generate
+      renderer_class = DocJuan.renderer params[:format]
+      renderer = renderer_class.new params[:url], params[:filename], params[:options]
+      result = renderer.generate
 
       headers['Content-Type'] = result.mime_type
       headers['Content-Disposition'] = "attachment; filename=\"#{result.filename}\""
