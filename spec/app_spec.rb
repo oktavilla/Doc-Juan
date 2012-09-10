@@ -49,20 +49,40 @@ describe DocJuan::App do
 
     end
 
-    it 'generates the pdf and returns a X-Accel-Redirect header pointing to it' do
+    it 'generates a pdf and returns a X-Accel-Redirect header pointing to it' do
       pdf = stub path: '/path/to/doc', filename: 'invoice.pdf', mime_type: 'application/pdf', ok?: true
       DocJuan::Pdf.any_instance.expects(:generate).returns pdf
 
-      get "/render?url=#{url}&filename=#{filename}&key=#{key}"
+      get "/render?url=#{url}&filename=#{filename}&format=pdf&key=21f1b9542c4e12c84d70c9026810a478615f7e37"
 
+      last_response.headers['Content-Type'].must_equal 'application/pdf'
       last_response.headers['X-Accel-Redirect'].must_equal '/path/to/doc'
       last_response.headers['Content-Disposition'].must_equal "attachment; filename=\"invoice.pdf\""
       last_response.headers['Cache-Control'].must_equal "public,max-age=2592000"
     end
 
-    it 'fails with a 500 if the pdf could not be generated' do
+    it 'generates a jpg and returns a X-Accel-Redirect header pointing to it' do
+      jpg = stub path: '/path/to/doc', filename: 'invoice.jpg', mime_type: 'image/jpeg', ok?: true
+      DocJuan::Jpg.any_instance.expects(:generate).returns jpg
+
+      get "/render?url=#{url}&filename=#{filename}&key=13c61d7312bff6483b7c0f76e3b884b9aa2f47c3&format=jpg"
+
+      last_response.headers['Content-Type'].must_equal 'image/jpeg'
+      last_response.headers['X-Accel-Redirect'].must_equal '/path/to/doc'
+      last_response.headers['Content-Disposition'].must_equal "attachment; filename=\"invoice.jpg\""
+      last_response.headers['Cache-Control'].must_equal "public,max-age=2592000"
+    end
+
+    it 'defaults to pdf as format' do
+      pdf = stub path: '/path/to/doc', filename: 'invoice.pdf', mime_type: 'application/pdf', ok?: true
+      DocJuan::Pdf.any_instance.expects(:generate).returns pdf
+
+      get "/render?url=#{url}&filename=#{filename}&key=#{key}"
+    end
+
+    it 'fails with a 500 if the file could not be generated' do
       DocJuan::Pdf.any_instance.stubs(:exists?).returns false
-      DocJuan::Pdf.any_instance.expects(:generate).raises DocJuan::Pdf::CouldNotGeneratePdfError
+      DocJuan::Pdf.any_instance.expects(:generate).raises DocJuan::CouldNotGenerateFileError
 
       get "/render", { url: url, filename: filename, key: key }
 

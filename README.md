@@ -15,7 +15,7 @@ A seductive API for converting HTML documents into specified format. Relies on n
 
 `filename` - Filename of the rendered document. Required.
 
-`format` - Output format. Defaults to pdf, currently the only supported format.
+`format` - Output format. Defaults to pdf, the other valid value is jpg.
 
 `options` - Options for renderer, see below.
 
@@ -29,15 +29,22 @@ A seductive API for converting HTML documents into specified format. Relies on n
 
 #### Options
 
-* `title` - PDF title, defaults to the title of the HTML document.
-* `print_stylesheet` - If set to `true` the print stylesheet of the resource will be used.
 * `width` - Page width in millimeters.
 * `height` - Page height in millimeters.
-* `size` - a4, letter etc. This will be ignored if width and height is set. [List of sizes](http://stackoverflow.com/questions/6394905/wkhtmltopdf-what-paper-sizes-are-valid).
-* `orientation` - `landscape` or `portrait`. Defaults to portrait.
-* `lowquality` - Renders the pdf in low quality if set to `true`
 * `username` - Username for HTTP authentication
 * `password` - Password for HTTP authentication
+
+##### PDF specific
+
+* `title` - PDF title, defaults to the title of the HTML document.
+* `print_stylesheet` - If set to `true` the print stylesheet of the resource will be used.
+* `size` - a4, letter etc. This will be ignored if width and height is set. [List of sizes](http://stackoverflow.com/questions/6394905/wkhtmltopdf-what-paper-sizes-are-valid).
+* `orientation` - `landscape` or `portrait`. Defaults to portrait.
+* `lowquality` - Renders the pdf in low quality if set to `true`.
+
+##### JPG specific
+
+* `quality` - JPEG Quality of rendered file, should be 0 to 100
 	
 #### Example
 	
@@ -95,7 +102,7 @@ http://wiki.nginx.org/XSendfile
 
 ## Future
 
-* PNG / JPEG output support
+* PNG output support
 * Stats for detecting load
 
 ## Contributing
