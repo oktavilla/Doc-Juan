@@ -11,7 +11,7 @@ module DocJuan
         :username, :password
       ],
       defaults: {
-        quality: 80,
+        quality: 100,
         format: 'jpg',
         encoding: 'UTF-8',
       },
