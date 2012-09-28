@@ -1,9 +1,9 @@
 require_relative 'generator_base'
 
 module DocJuan
-  class Jpg < GeneratorBase
-    self.file_format = 'jpg'
-    self.mime_type = 'image/jpeg'
+  class Png < GeneratorBase
+    self.file_format = 'png'
+    self.mime_type = 'image/png'
     self.executable = 'wkhtmltoimage'
     self.options = {
       whitelist:[
@@ -12,7 +12,7 @@ module DocJuan
       ],
       defaults: {
         quality: 90,
-        format: 'jpg',
+        format: 'png',
         encoding: 'UTF-8',
       },
       conversions: {}

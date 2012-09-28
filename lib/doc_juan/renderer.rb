@@ -5,6 +5,8 @@ module DocJuan
   def self.renderer format
     if format == "jpg"
      DocJuan::Jpg
+    elsif format == "png"
+       DocJuan::Png
     elsif format == "pdf" || format.blank?
       DocJuan::Pdf
     else

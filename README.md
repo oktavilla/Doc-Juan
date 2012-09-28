@@ -15,7 +15,7 @@ A seductive API for converting HTML documents into specified format. Relies on n
 
 `filename` - Filename of the rendered document. Required.
 
-`format` - Output format. Defaults to pdf, the other valid value is jpg.
+`format` - Output format. Defaults to pdf, the other valid formats are jpg and png.
 
 `options` - Options for renderer, see below.
 
