@@ -33,7 +33,7 @@ module DocJuan
       result = renderer.generate
 
       headers['Content-Type'] = result.mime_type
-      headers['Content-Disposition'] = "attachment; filename=\"#{result.filename}\""
+      headers['Content-Disposition'] = "inline; filename=\"#{result.filename}\""
       headers['Cache-Control'] = 'public,max-age=2592000'
       headers['X-Accel-Redirect'] = result.path
     end

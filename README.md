@@ -55,7 +55,7 @@ A seductive API for converting HTML documents into specified format. Relies on n
 	HTTP/1.1 200 OK
 	Date: Wed, 20 Jun 2012 14:11:30 GMT
 	Content-Type: application/pdf
-	Content-Disposition: attachment; filename="a-document.pdf"
+	Content-Disposition: inline; filename="a-document.pdf"
 	Cache-Control: public,max-age=2592000
 	
 	[pdf data]	

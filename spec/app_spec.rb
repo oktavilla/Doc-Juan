@@ -57,7 +57,7 @@ describe DocJuan::App do
 
       last_response.headers['Content-Type'].must_equal 'application/pdf'
       last_response.headers['X-Accel-Redirect'].must_equal '/path/to/doc'
-      last_response.headers['Content-Disposition'].must_equal "attachment; filename=\"invoice.pdf\""
+      last_response.headers['Content-Disposition'].must_equal "inline; filename=\"invoice.pdf\""
       last_response.headers['Cache-Control'].must_equal "public,max-age=2592000"
     end
 
@@ -69,7 +69,7 @@ describe DocJuan::App do
 
       last_response.headers['Content-Type'].must_equal 'image/jpeg'
       last_response.headers['X-Accel-Redirect'].must_equal '/path/to/doc'
-      last_response.headers['Content-Disposition'].must_equal "attachment; filename=\"invoice.jpg\""
+      last_response.headers['Content-Disposition'].must_equal "inline; filename=\"invoice.jpg\""
       last_response.headers['Cache-Control'].must_equal "public,max-age=2592000"
     end
 
