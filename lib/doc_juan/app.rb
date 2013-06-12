@@ -37,5 +37,11 @@ module DocJuan
       headers['Cache-Control'] = 'public,max-age=2592000'
       headers['X-Accel-Redirect'] = result.path
     end
+
+    get '/robots.txt' do
+      headers['Content-Type'] = "text/plain"
+
+      "User-agent: *\nDisallow: /"
+    end
   end
 end
