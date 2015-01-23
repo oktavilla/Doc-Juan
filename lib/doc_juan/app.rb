@@ -1,8 +1,10 @@
 require 'sinatra/base'
+require 'rack/sendfile'
 require_relative 'auth'
 
 module DocJuan
   class App < Sinatra::Base
+    use Rack::Sendfile
 
     enable :logging
 
@@ -32,10 +34,8 @@ module DocJuan
       renderer = renderer_class.new params[:url], params[:filename], params[:options]
       result = renderer.generate
 
-      headers['Content-Type'] = result.mime_type
-      headers['Content-Disposition'] = "inline; filename=\"#{result.filename}\""
-      headers['Cache-Control'] = 'public,max-age=2592000'
-      headers['X-Accel-Redirect'] = result.path
+      cache_control :public, max_age: 2592000
+      send_file result.path, type: result.mime_type, disposition: :inline, filename: result.filename
     end
 
     get '/robots.txt' do
